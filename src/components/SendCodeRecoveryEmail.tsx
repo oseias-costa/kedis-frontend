@@ -6,7 +6,7 @@ export default function SendCodeRecoveryEmail(){
     const navigate = useNavigate()
 
     const handleSend = () => {
-        return navigate("/recuperar-senha/oseiasc2@gmail.com")}
+        return navigate("/validar-codigo/oseiasc2@gmail.com")}
 
     return(
         <div style={{width: 350}}>

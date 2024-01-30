@@ -5,7 +5,7 @@ import ModalFull from "../components/ModalFull";
 import { useState } from "react";
 import SendCodeRecoveryEmail from "../components/SendCodeRecoveryEmail";
 
-export default function Login(){
+export default function Register(){
     const { login, setLogin, handleLogin } = useLogin()
     const [open, setOpen] = useState(false)
 
@@ -15,7 +15,7 @@ export default function Login(){
                 <SendCodeRecoveryEmail />
             </ModalFull>
             <TextField 
-                label="Email" 
+                label="Nome" 
                 error={login.error != ""}
                 helperText={login.error !== "" ? login.error : null}
                 style={style.textField} 
@@ -29,7 +29,7 @@ export default function Login(){
                 } 
             />
             <TextField 
-                label="Senha" 
+                label="Sobrenome" 
                 error={login.error != ""}
                 helperText={login.error !== "" ? login.error : null}
                 style={style.textField} 
@@ -42,16 +42,40 @@ export default function Login(){
                     error: ""})
                 } 
             />
+            <TextField 
+                label="Email" 
+                error={login.error != ""}
+                helperText={login.error !== "" ? login.error : null}
+                style={style.textField} 
+                variant="filled"
+                size="small" 
+                sx={{input: {color: "#fff"}}}
+                onChange={(e) => setLogin({
+                    ...login, 
+                    password: e.target.value, 
+                    error: ""})
+                } 
+            />
+            <TextField 
+                label="Senha" 
+                error={login.error != ""}
+                helperText={login.error !== "" ? login.error : null}
+                style={style.textField} 
+                variant="filled"
+                size="small" 
+                sx={{input: {color  : "#fff"}}}
+                onChange={(e) => setLogin({
+                    ...login, 
+                    password: e.target.value, 
+                    error: ""})
+                } 
+            />
             <Button 
                 variant="contained" 
                 sx={style.button} 
                 size="small"
                 onClick={handleLogin}
-            >Entrar</Button>
-            <a 
-                style={style.forgetPassword}
-                onClick={() => setOpen(true)}
-            >Esqueci a senha</a>
+            >Registar</Button>
         </S.LoginContainer>
     )
 }

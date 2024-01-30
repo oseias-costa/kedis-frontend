@@ -1,19 +1,27 @@
-import { useLocation } from "react-router-dom";
-import * as S from "../styles/Login";
-import Logo from "/logo-kedis.svg"
+import { useLocation, useNavigate } from "react-router-dom";
 import { Button, TextField } from "@mui/material";
 
 export default function RecoveryPassword(){
     const location = useLocation()
-    const email = location.pathname.split("/")[2]
+    const navigate = useNavigate()
+
+    const handleUpdate = () => {
+        return navigate("/login")
+    }
 
     return(
         <section style={style.container}>
-            <S.Img src={Logo} alt="Logo Kedis" />
-            <h2 style={{textAlign: "left"}}>Verificar código</h2>
-            <p style={{textAlign: "left"}}>Digite abaixo o código de 4 dígitos enviado para o email: <strong>{email}</strong>.</p>
+            <h2 style={{textAlign: "left"}}>Alterar Senha</h2>
+            <p style={style.text}>Digite abaixo a nova senha:</p>
             <TextField 
-                label="Código"
+                label="Nova senha"
+                style={style.textField} 
+                variant="filled" 
+                size="small"
+                sx={{input: {color: "#fff"}}}
+            />
+            <TextField 
+                label="Confirme a senha"
                 style={style.textField} 
                 variant="filled" 
                 size="small"
@@ -23,8 +31,8 @@ export default function RecoveryPassword(){
                 variant="contained" 
                 sx={style.button} 
                 size="small"
-                // onClick={handleSend}
-            >Verificar código</Button>
+                onClick={handleUpdate}
+            >Salvar nova senha</Button>
         </section>
     )
 }
@@ -38,6 +46,12 @@ const style = {
         width: "350px",
         marginTop: "10px",
         fontFamily: "var(--font-secondary)"
+    },
+    text: {
+        fontFamily: "var(--font-secondary)",
+        fontSize: "18px",
+        fontWeight: 200,
+        textAlign: "left" as const
     },
     button: {
         fontFamily: "var(--font-secondary)",

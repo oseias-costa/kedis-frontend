@@ -9,6 +9,7 @@ import Box from '@mui/material/Box';
 import * as S from "../styles/Login";
 import Logo from "/logo-kedis.svg"
 import Login from '../pages/Login';
+import Register from './Register';
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -83,7 +84,7 @@ export default function LoginTabs() {
             <Login />
         </TabPanel>
         <TabPanel value={value} index={1} dir={theme.direction}>
-            <Login />
+            <Register />
         </TabPanel>
       </SwipeableViews>
     </Box>
