@@ -5,7 +5,10 @@ export const LoginContainer = styled.section`
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    border: 1px solid red;
+
+    .forget {
+        align-self: left;
+    }
 `
 export const Img = styled.img`
     width: 200px;

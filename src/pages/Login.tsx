@@ -1,12 +1,19 @@
 import { Button, TextField } from "@mui/material";
 import * as S from "../styles/Login";
 import useLogin from "../controller/useLogin";
+import ModalFull from "../components/ModalFull";
+import { useState } from "react";
+import SendCodeRecoveryEmail from "../components/SendCodeRecoveryEmail";
 
 export default function Login(){
     const { login, setLogin, handleLogin } = useLogin()
+    const [open, setOpen] = useState(false)
 
     return(
         <S.LoginContainer>
+            <ModalFull open={open} setOpen={setOpen}>
+                <SendCodeRecoveryEmail />
+            </ModalFull>
             <TextField 
                 label="Email" 
                 error={login.error != ""}
@@ -41,6 +48,11 @@ export default function Login(){
                 size="small"
                 onClick={handleLogin}
             >Entrar</Button>
+            <Button 
+                style={style.forgetPassword}
+                className="forget"
+                onClick={() => setOpen(true)}
+            >Esqueci a senha</Button>
         </S.LoginContainer>
     )
 }
@@ -60,5 +72,23 @@ const style = {
         backgroundColor: "#F2F2F0",
         marginTop: "10px",
         width: "350px"
+    },
+    forgetPassword: {
+        fontFamily: "var(--font-secondary)",
+        fontSize: "16px",
+        fontWeight: "200",
+        height: "20px",
+        alignSelf: "left",
+        cursor: "pointer",
+        paddingTop: 10,
+        marginTop: 10,
+        color: "#fff",
+        ":hover": {
+            color: "red",
+            backgroundColor: "red"
+        },
+        "@media(max-width: 800px)": {
+            paddingLeft: "24px",
+        }
     }
 }
