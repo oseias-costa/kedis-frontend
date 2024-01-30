@@ -59,14 +59,14 @@ export default function LoginTabs() {
   return (
     <Box sx={{ bgcolor: '#181B1E', width: 350 }}>
     <S.Img src={Logo} alt="Logo Kedis" />
-      <AppBar id="body-Tab" position="static" sx={{borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}>
+      <AppBar id="body-Tab" position="static">
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="inherit"
           variant="fullWidth"
-          sx={{ bgcolor: '#181B1E', borderTopLeftRadius: "10px", borderTopRightRadius: "10px"}}
+          sx={{ bgcolor: '#181B1E'}}
           >
           <Tab label="Entrar" sx={style.tab} {...a11yProps(0)} />
           <Tab label="Registrar" sx={style.tab} {...a11yProps(1)} />

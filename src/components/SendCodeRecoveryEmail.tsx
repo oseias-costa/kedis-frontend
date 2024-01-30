@@ -1,7 +1,13 @@
 import { Button, TextField } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 
 export default function SendCodeRecoveryEmail(){
+    const navigate = useNavigate()
+
+    const handleSend = () => {
+        return navigate("/recuperar-senha/oseiasc2@gmail.com")}
+
     return(
         <div style={{width: 350}}>
             <h2 style={style.title}>Recuperação de senha</h2>
@@ -17,7 +23,7 @@ export default function SendCodeRecoveryEmail(){
                 variant="contained" 
                 sx={style.button} 
                 size="small"
-                // onClick={handleLogin}
+                onClick={handleSend}
             >Recuperar senha</Button>
         </div>
     )

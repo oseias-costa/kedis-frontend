@@ -1,8 +1,10 @@
-import { ThemeProvider, createTheme } from '@mui/material';
+import { createTheme } from '@mui/material';
 import './App.css'
+import { Outlet, RouterProvider } from 'react-router-dom';
 import LoginTabs from './components/LoginTabs';
+import { router } from './routes/RenderRoutes';
 
-const theme = createTheme({
+export const theme = createTheme({
   palette: {
     background: {
       paper: '#fff',
@@ -21,13 +23,10 @@ const theme = createTheme({
 });
 
 function App() {
-  return (
-    <ThemeProvider theme={theme}>
-      <>
-        {/* <Login /> */}
-        <LoginTabs />
-      </>
-    </ThemeProvider>
+  return(
+    <RouterProvider router={router}>
+      <LoginTabs />
+    </RouterProvider>
   )
 }
 

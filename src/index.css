@@ -24,3 +24,8 @@ body {
   min-height: 100vh;
 }
 
+h2 {
+  font-family: var(--font-secondary);
+  font-weight: 400;
+  font-size: 32px;
+}
