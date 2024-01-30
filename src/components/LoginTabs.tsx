@@ -57,27 +57,29 @@ export default function LoginTabs() {
   };
 
   return (
-    <Box sx={{ bgcolor: '#181B1E', width: 350 }} style={{borderColor: "#524E4E", borderWidth: "1px"}}>
+    <Box sx={{ bgcolor: '#181B1E', width: 350 }}>
     <S.Img src={Logo} alt="Logo Kedis" />
-
-      <AppBar position="static">
+      <AppBar id="body-Tab" position="static" sx={{margin: "1px", borderTopLeftRadius: "10px", borderTopRightRadius: "10px", borderColor: "#524E4E"}}>
         <Tabs
           value={value}
           onChange={handleChange}
           indicatorColor="primary"
           textColor="inherit"
           variant="fullWidth"
-          sx={{ bgcolor: '#181B1E' }}
-        >
+          sx={{ bgcolor: '#181B1E', borderTopLeftRadius: "10px", borderTopRightRadius: "10px", margin: "1px"}}
+          style={{borderColor: "#524E4E", borderWidth: "1px" }}
+          >
           <Tab label="Entrar" sx={style.tab} {...a11yProps(0)} />
           <Tab label="Registrar" sx={style.tab} {...a11yProps(1)} />
         </Tabs>
       </AppBar>
+     
       <SwipeableViews
         axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
         index={value}
         onChangeIndex={handleChangeIndex}
-      >
+        style={{borderColor: "red", borderWidth: "1px", padding: "1px" }}
+        >
         <TabPanel value={value} index={0} dir={theme.direction}>
             <Login />
         </TabPanel>
