@@ -1,6 +1,6 @@
 import { ThemeProvider, createTheme } from '@mui/material';
 import './App.css'
-import Login from './pages/Login'
+import LoginTabs from './components/LoginTabs';
 
 const theme = createTheme({
   palette: {
@@ -8,14 +8,14 @@ const theme = createTheme({
       paper: '#fff',
     },
     text: {
-      primary: '#FF5F05',
-      secondary: '#525252',
+      primary: '#F2F2F0',
+      secondary: '#F2F2F0',
     },
     action: {
-      active: '#FF5F05',
+      active: '#524E4E',
     },
     primary: {
-      main: "#FF5F05"
+      main: "#F2F2F0"
     },
   },
 });
@@ -24,7 +24,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <>
-        <Login />
+        {/* <Login /> */}
+        <LoginTabs />
       </>
     </ThemeProvider>
   )

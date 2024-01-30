@@ -1,20 +1,19 @@
 import { Button, TextField } from "@mui/material";
 import * as S from "../styles/Login";
 import useLogin from "../controller/useLogin";
-import Logo from "/logo.svg"
 
 export default function Login(){
     const { login, setLogin, handleLogin } = useLogin()
 
     return(
         <S.LoginContainer>
-            <S.Img src={Logo} alt="Logo Kedis" />
             <TextField 
                 label="Email" 
                 error={login.error != ""}
                 helperText={login.error !== "" ? login.error : null}
                 style={style.textField} 
                 variant="filled" 
+                size="small"
                 sx={{input: {color: "#fff"}}}
                 onChange={(e) => setLogin({
                     ...login, 
@@ -27,7 +26,8 @@ export default function Login(){
                 error={login.error != ""}
                 helperText={login.error !== "" ? login.error : null}
                 style={style.textField} 
-                variant="filled" 
+                variant="filled"
+                size="small" 
                 sx={{input: {color: "#fff"}}}
                 onChange={(e) => setLogin({
                     ...login, 
@@ -38,7 +38,7 @@ export default function Login(){
             <Button 
                 variant="contained" 
                 sx={style.button} 
-                size="large"
+                size="small"
                 onClick={handleLogin}
             >Entrar</Button>
         </S.LoginContainer>
@@ -47,17 +47,18 @@ export default function Login(){
 
 const style = {
     textField: {
-        color: "#fff",
-        width: "300px",
+        color: "#524E4E",
+        width: "350px",
         marginTop: "10px",
+        fontFamily: "var(--font-secondary)",
     },
     button: {
         fontFamily: "var(--font-secondary)",
         textTransform: "capitalize",
         fontSize: "18px",
         fontWeight: 400,
-        backgroundColor: "#FF5F05",
+        backgroundColor: "#F2F2F0",
         marginTop: "10px",
-        width: "300px"
+        width: "350px"
     }
 }
