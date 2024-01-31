@@ -94,7 +94,8 @@ const style = {
         fontWeight: 400,
         backgroundColor: "#F2F2F0",
         marginTop: "10px",
-        width: "350px"
+        width: "350px",
+        height: 40
     },
     forgetPassword: {
         fontFamily: "var(--font-secondary)",

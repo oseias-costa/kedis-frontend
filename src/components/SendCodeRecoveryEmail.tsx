@@ -1,12 +1,8 @@
-import { Button, TextField } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-
+import { Button, CircularProgress, TextField } from "@mui/material";
+import useSendCodeRecoveryEmail from "../controller/useSendCodeRecoveryEmail";
 
 export default function SendCodeRecoveryEmail(){
-    const navigate = useNavigate()
-
-    const handleSend = () => {
-        return navigate("/validar-codigo/oseiasc2@gmail.com")}
+    const {state, setState, handleSendCode} = useSendCodeRecoveryEmail()
 
     return(
         <div style={{width: 350}}>
@@ -15,16 +11,20 @@ export default function SendCodeRecoveryEmail(){
             <TextField 
                 label="Email"
                 style={style.textField} 
+                error={state.error !== ""}
+                helperText={state.error}
                 variant="filled" 
                 size="small"
                 sx={{input: {color: "#fff"}}}
+                onChange={(e) => setState({...state, email: e.target.value, error: ""})}
             />
             <Button 
                 variant="contained" 
                 sx={style.button} 
+                disabled={state.loading}
                 size="small"
-                onClick={handleSend}
-            >Recuperar senha</Button>
+                onClick={handleSendCode}
+            >{state.loading ? <CircularProgress  style={{width: 20, height: 20}} /> : "Recuperar senha"}</Button>
         </div>
     )
 }
@@ -53,6 +53,7 @@ const style = {
         fontWeight: 400,
         backgroundColor: "#F2F2F0",
         marginTop: "10px",
-        width: "350px"
+        width: "350px",
+        height: 40
     }
 }

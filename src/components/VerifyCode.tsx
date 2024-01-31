@@ -1,26 +1,20 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import * as S from "../styles/Login";
 import Logo from "/logo-kedis.svg"
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import ModalFull from "./ModalFull";
-import { useState } from "react";
 import RecoveryPassword from "./RecoveyPassword";
+import useVerifyCode from "../controller/useVerifyCode";
 
 export default function VerifyCode(){
     const location = useLocation()
     const email = location.pathname.split("/")[2]
-    const navigate = useNavigate()
-    const [open, setOpen] = useState(false)
-    
-
-    const handleSend = () => {
-        return setOpen(true)
-    }
-
+    const {state, setState, handleSendCode, open, setOpen} = useVerifyCode(email)
+  
     return(
         <section style={style.container}>
             <ModalFull open={open} setOpen={setOpen}>
-                <RecoveryPassword />
+                <RecoveryPassword email={email} />
             </ModalFull>
             <S.Img src={Logo} alt="Logo Kedis" />
             <h2 style={{textAlign: "left"}}>Verificar código</h2>
@@ -28,16 +22,20 @@ export default function VerifyCode(){
             <TextField 
                 label="Código"
                 style={style.textField} 
+                error={state.error !== ""}
+                helperText={state.error}
                 variant="filled" 
                 size="small"
+                onChange={(e) => setState({...state, error: "", code: Number(e.target.value)})}
                 sx={{input: {color: "#fff"}}}
             />
             <Button 
                 variant="contained" 
+                disabled={state.loading}
                 sx={style.button} 
                 size="small"
-                onClick={handleSend}
-            >Verificar código</Button>
+                onClick={handleSendCode}
+                >{state.loading ? <CircularProgress  style={{width: 20, height: 20}} /> : "Verificar código"}</Button>
         </section>
     )
 }
@@ -66,6 +64,7 @@ const style = {
         fontWeight: 400,
         backgroundColor: "#F2F2F0",
         marginTop: "10px",
-        width: "350px"
+        width: "350px",
+        height: 40
     }
 }

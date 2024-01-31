@@ -1,28 +1,29 @@
-import { useLocation, useNavigate } from "react-router-dom";
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
+import useRecoveryPassword from "../controller/useRecoveryPassword";
 
-export default function RecoveryPassword(){
-    const location = useLocation()
-    const navigate = useNavigate()
-
-    const handleUpdate = () => {
-        return navigate("/login")
-    }
+export default function RecoveryPassword({email}:{email: string}){
+    const {state, setState, handleChangePassword} = useRecoveryPassword(email)
 
     return(
         <section style={style.container}>
             <h2 style={{textAlign: "left"}}>Alterar Senha</h2>
-            <p style={style.text}>Digite abaixo a nova senha:</p>
+            <p style={style.text}>Escolha uma nova senha e abaixo coloque a senha novamente.</p>
             <TextField 
                 label="Nova senha"
+                onChange={(e) => setState({...state, error: "", password: e.target.value})}
                 style={style.textField} 
+                error={state.error !== ""}
+                helperText={state.error}
                 variant="filled" 
                 size="small"
                 sx={{input: {color: "#fff"}}}
             />
             <TextField 
                 label="Confirme a senha"
+                onChange={(e) => setState({...state, error: "", verifyPassword: e.target.value})}
                 style={style.textField} 
+                error={state.error !== ""}
+                helperText={state.error}
                 variant="filled" 
                 size="small"
                 sx={{input: {color: "#fff"}}}
@@ -31,8 +32,8 @@ export default function RecoveryPassword(){
                 variant="contained" 
                 sx={style.button} 
                 size="small"
-                onClick={handleUpdate}
-            >Salvar nova senha</Button>
+                onClick={handleChangePassword}
+                >{state.loading ? <CircularProgress  style={{width: 20, height: 20}} /> : "Salvar nova senha"}</Button>
         </section>
     )
 }
@@ -60,6 +61,7 @@ const style = {
         fontWeight: 400,
         backgroundColor: "#F2F2F0",
         marginTop: "10px",
-        width: "350px"
+        width: "350px",
+        height: 40
     }
 }

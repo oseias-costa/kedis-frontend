@@ -20,6 +20,9 @@ export const theme = createTheme({
       main: "#F2F2F0"
     },
   },
+  typography: {
+    "fontFamily": 'Kanit'
+  }
 });
 
 function App() {
