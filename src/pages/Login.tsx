@@ -1,21 +1,21 @@
 import { Button, CircularProgress, TextField } from "@mui/material";
 import * as S from "../styles/Login";
 import ModalFull from "../components/ModalFull";
-import { useState } from "react";
+import React, { useState } from "react";
 import SendCodeRecoveryEmail from "../components/SendCodeRecoveryEmail";
 import useLogin from "../controller/useLogin";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 
-export default function Login(){
+export default function Login(): React.ReactNode{
     const { login, setLogin, handleLogin } = useLogin()
     const user = useSelector((state: RootState) => state.user.user)
     const [open, setOpen] = useState(false)
     const navigate = useNavigate()
 
     if (user.id) {
-        return navigate("/", { replace: true })
+        return <Navigate to="/" replace={true} />
     }
 
     return(

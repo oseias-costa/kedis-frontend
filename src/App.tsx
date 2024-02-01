@@ -51,8 +51,8 @@ function App() {
       }
   }, [])
 
-  if(!user.id && token) {
-    return <Load load={true} />
+  if(user.id === "" && token) {
+    return <Load load={load} />
   }
 
   return <RouterProvider router={router} /> 

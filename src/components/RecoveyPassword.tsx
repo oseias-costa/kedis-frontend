@@ -33,7 +33,7 @@ export default function RecoveryPassword({email}:{email: string}){
                 sx={style.button} 
                 size="small"
                 onClick={handleChangePassword}
-                >{state.loading ? <CircularProgress  style={{width: 20, height: 20}} /> : "Salvar nova senha"}</Button>
+            >{state.loading ? <CircularProgress  style={{width: 20, height: 20}} /> : "Salvar nova senha"}</Button>
         </section>
     )
 }

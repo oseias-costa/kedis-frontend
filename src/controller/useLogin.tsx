@@ -1,13 +1,11 @@
 import axios from "axios"
 import { useState } from "react"
-import { useDispatch, useSelector } from "react-redux"
-import { RootState } from "../redux/store"
+import { useDispatch } from "react-redux"
 import { httpClient } from "../utils/httpClient"
 import { fecthUser } from "../redux/user.slice"
 
 export default function useLogin(){
     const [login, setLogin] = useState({email: "", password:"", error: "", loading: false})
-    const user = useSelector((state: RootState) => state.user.user)
     const dispatch = useDispatch()
 
     function handleLogin(){

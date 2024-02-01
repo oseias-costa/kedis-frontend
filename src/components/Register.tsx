@@ -1,81 +1,83 @@
-import { Button, TextField } from "@mui/material";
+import { Button, CircularProgress, TextField } from "@mui/material";
 import * as S from "../styles/Login";
-import useLogin from "../controller/useLogin";
-import ModalFull from "../components/ModalFull";
-import { useState } from "react";
-import SendCodeRecoveryEmail from "../components/SendCodeRecoveryEmail";
+import useRegister from "../controller/useRegister";
+import { useSelector } from "react-redux";
+import { RootState } from "../redux/store";
+import { Navigate } from "react-router-dom";
 
 export default function Register(){
-    const { login, setLogin, handleLogin } = useLogin()
-    const [open, setOpen] = useState(false)
+    const { register, setRegister, handleRegister } = useRegister()
+    const user = useSelector((state: RootState) => state.user.user)
+
+    if (user.id) {
+        return <Navigate to="/" replace={true} />
+    }
 
     return(
         <S.LoginContainer>
-            <ModalFull open={open} setOpen={setOpen}>
-                <SendCodeRecoveryEmail />
-            </ModalFull>
             <TextField 
                 label="Nome" 
-                error={login.error != ""}
-                helperText={login.error !== "" ? login.error : null}
+                error={register.errorType === "firstName" && register.error !== ""}
+                helperText={register.errorType === "firstName" && register.error}
                 style={style.textField} 
                 variant="filled" 
                 size="small"
                 sx={{input: {color: "#fff"}}}
-                onChange={(e) => setLogin({
-                    ...login, 
-                    email: e.target.value, 
+                onChange={(e) => setRegister({
+                    ...register, 
+                    firstName: e.target.value, 
                     error: ""})
                 } 
             />
             <TextField 
                 label="Sobrenome" 
-                error={login.error != ""}
-                helperText={login.error !== "" ? login.error : null}
+                error={register.errorType === "lastName" && register.error != ""}
+                helperText={register.errorType === "lastName" && register.error}
                 style={style.textField} 
                 variant="filled"
                 size="small" 
                 sx={{input: {color: "#fff"}}}
-                onChange={(e) => setLogin({
-                    ...login, 
-                    password: e.target.value, 
+                onChange={(e) => setRegister({
+                    ...register, 
+                    lastName: e.target.value, 
                     error: ""})
                 } 
             />
             <TextField 
                 label="Email" 
-                error={login.error != ""}
-                helperText={login.error !== "" ? login.error : null}
+                error={register.errorType === "email" && register.error != ""}
+                helperText={register.errorType === "email" && register.error}
                 style={style.textField} 
                 variant="filled"
                 size="small" 
                 sx={{input: {color: "#fff"}}}
-                onChange={(e) => setLogin({
-                    ...login, 
-                    password: e.target.value, 
+                onChange={(e) => setRegister({
+                    ...register, 
+                    email: e.target.value, 
                     error: ""})
                 } 
             />
             <TextField 
                 label="Senha" 
-                error={login.error != ""}
-                helperText={login.error !== "" ? login.error : null}
+                error={register.errorType === "password" && register.error != ""}
+                helperText={register.errorType === "password" && register.error}
                 style={style.textField} 
                 variant="filled"
                 size="small" 
                 sx={{input: {color  : "#fff"}}}
-                onChange={(e) => setLogin({
-                    ...login, 
+                onChange={(e) => setRegister({
+                    ...register, 
                     password: e.target.value, 
                     error: ""})
                 } 
             />
-            <Button 
+            <Button
+                disabled={register.loading} 
                 variant="contained" 
                 sx={style.button} 
                 size="small"
-                onClick={handleLogin}
-            >Registar</Button>
+                onClick={handleRegister}
+            >{register.loading ? <CircularProgress style={{width: 20, height: 20}} /> : "Registrar"}</Button>
         </S.LoginContainer>
     )
 }
