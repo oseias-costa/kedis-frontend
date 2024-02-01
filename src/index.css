@@ -40,3 +40,17 @@ p {
   font-weight: 300;
   margin: 0
 }
+
+.progress-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background: 
+    radial-gradient(closest-side, #181B1E 78%, transparent 80% 100%),
+    conic-gradient(#F3F6F9 75%, #181B1E 0);    
+}
