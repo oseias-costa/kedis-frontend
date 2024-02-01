@@ -21,8 +21,22 @@ body {
   padding: 0;
 }
 
+h1 {
+  font-size: 28px;
+  margin: 0;
+  padding: 0;
+  color: #F3F6F9
+}
+
 h2 {
   font-family: var(--font-secondary);
   font-weight: 400;
   font-size: 32px;
+  margin: 0;
+}
+
+p {
+  font-family: var(--font-secondary);
+  font-weight: 300;
+  margin: 0
 }
