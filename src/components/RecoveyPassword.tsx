@@ -38,7 +38,7 @@ export default function RecoveryPassword({email}:{email: string}){
     )
 }
 
-const style = {
+export const style = {
     container: {
         width: 350
     },
