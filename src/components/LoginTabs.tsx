@@ -58,7 +58,8 @@ export default function LoginTabs() {
   };
 
   return (
-    <Box sx={{ bgcolor: '#181B1E', width: 350 }}>
+    <section style={{display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", paddingTop: 50 }}>
+    <Box sx={{ bgcolor: '#181B1E', width: 350, display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center" }}>
     <S.Img src={Logo} alt="Logo Kedis" />
       <AppBar id="body-Tab" position="static">
         <Tabs
@@ -88,6 +89,7 @@ export default function LoginTabs() {
         </TabPanel>
       </SwipeableViews>
     </Box>
+    </section>
   );
 }
 
@@ -98,5 +100,11 @@ const style = {
         fontSize: "18px",
         fontWeight: 300,
         color: '#F2F2F0'
+    },
+    container: {
+      display: "flex",
+      flexDirection: "column",
+      justifyContent: "center",
+      alignItems: "center"
     }
 }
