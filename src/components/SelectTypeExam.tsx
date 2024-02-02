@@ -12,7 +12,7 @@ export default function SelectTypeExam() {
   };
 
   return (
-    <FormControl sx={{ m: 1, minWidth: 120 }} size="small">
+    <FormControl sx={{ m: 1, minWidth: 180}} size="small">
       <InputLabel id="demo-select-small-label">Exame</InputLabel>
       <Select
         labelId="demo-select-small-label"
@@ -21,10 +21,10 @@ export default function SelectTypeExam() {
         label="Age"
         onChange={handleChange}
       >
-        <MenuItem value="">
+        {/* <MenuItem value="">
           <em>None</em>
-        </MenuItem>
-        <MenuItem value={10}>Cloud Pratictioner</MenuItem>
+        </MenuItem> */}
+        <MenuItem sx={{bgcolor: "red"}} value={10} selected={true}>Cloud Pratictioner</MenuItem>
         <MenuItem value={20}>Twenty</MenuItem>
         <MenuItem value={30}>Thirty</MenuItem>
       </Select>

@@ -1,4 +1,5 @@
 import styled from "styled-components"
+import ChartStatistics from "./ChartStatistics"
 
 export default function StatisticsItem(){
     return (
@@ -6,7 +7,7 @@ export default function StatisticsItem(){
             <TableStatistics>
                 <thead>
                     <th></th>
-                    <th>Serviços</th>
+                    <th className="service">Serviços</th>
                     <th className="qtde">Erradas</th>
                 </thead>
                 <tbody> 
@@ -27,12 +28,20 @@ export default function StatisticsItem(){
                     </tr>
                 </tbody>
             </TableStatistics>
+            <div className="chart">
+                <ChartStatistics data={data} />
+            </div>
         </Container>
     )
 }
 
 const Container = styled.div`
     width: 200px;
+
+    .chart {
+        width: 200px;
+        height: 150px;
+    }
 `
 
 const TableStatistics = styled.table`
@@ -53,4 +62,25 @@ const TableStatistics = styled.table`
     .num {
         padding-right: 5px;
     }
+
+    .service {
+        text-align: left;
+        font-weight: 400;
+    }
 `
+
+const data = [
+    {
+      "country": "1",
+      "hot dog": 3,
+    },
+    {
+      "country": "2",
+      "hot dog": 2,
+      
+    },
+    {
+      "country": "3",
+      "hot dog": 4,
+    }
+  ]
