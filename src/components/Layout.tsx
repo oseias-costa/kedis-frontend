@@ -1,33 +1,45 @@
-import { Link, Outlet, useLocation } from "react-router-dom"
+import { Outlet, useLocation } from "react-router-dom"
 import Logo from "/logo-kedis.svg"
-import Button from "@mui/material/Button"
+import LinkMenu from "./LinkMenu"
+import { useDispatch } from "react-redux"
+import { fecthUser, initialUserState } from "../redux/user.slice"
 
 export default function Layout(){
     const location = useLocation()
     const path = location.pathname
+    const dispatch = useDispatch()
 
     const links = menuData.map((item) => {
-        return(
-            <Link to={item.path} key={item.id}>
-                <Button 
-                    style={style.menu.link} 
-                    variant="text"
-                    sx={{ 
-                        bgcolor: path === item.path ? "#26282B" : null,
-                        color: path === item.path ? "#D3D3D3" : "#959595"
-                    }}
-                >
-                    {item.text}
-                </Button>
-            </Link>
-        )
+        return <LinkMenu 
+                    key={item.id} 
+                    path={path} 
+                    itemPath={item.path} 
+                    text={item.text} 
+                />
     })
 
     return(
         <section style={style.container}>
             <div style={style.menu.box}>
-                <img className="logo" src={Logo} style={style.menu.img} alt="Logo Kedis" />
-                <div>{links}</div>
+                <div>
+                    <img className="logo" src={Logo} style={style.menu.img} alt="Logo Kedis" />
+                    <div>{links}</div>
+                </div>
+                <div style={{paddingBottom: 20}}>
+                    <LinkMenu 
+                        key={5} 
+                        itemPath="/conta" 
+                        text="Conta" 
+                        path={path} 
+                    />
+                    <LinkMenu 
+                        key={6} 
+                        itemPath="/sair" 
+                        text="Sair" 
+                        path={path} 
+                        onClick={() => dispatch(fecthUser(initialUserState))} 
+                    />
+                </div>
             </div>
             <div>
                 <header style={style.header}></header>
@@ -41,20 +53,32 @@ const style = {
     container: {
         display: "flex",
         justifyContent: "start",
-        height: "100vh",
+        height: "100vh"
     },
     content: {
-        padding: 32
+        padding: 32,
+        paddingLeft: 232,
+        marginTop: 50
     },
     header: {
         borderBottom: "1px solid #40464D",
+        borderLeft: "1px solid #40464D",
         height: 50,
-        width: "calc(100vw - 200px)"
+        width: "calc(100vw - 215px)",
+        marginLeft: 200,
+        position: "fixed" as const,
+        backgroundColor: "#181B1E",
+        zIndex: 100
     },
     menu: {
         box: {
+            position: "fixed" as const,
             borderRight: "1px solid #40464D", 
             width: 200,
+            height: "100vh",
+            display: "flex",
+            flexDirection: "column" as const,
+            justifyContent: "space-between"
         },
         img: {
             width: 120,
@@ -97,10 +121,5 @@ const menuData = [
         id: 4, 
         path: "/planos",
         text: "Planos"
-    },
-    {
-        id: 5, 
-        path: "/conta",
-        text: "Conta"
-    },
+    }
 ]

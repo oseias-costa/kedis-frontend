@@ -1,13 +1,10 @@
-import { Button } from "@mui/material";
-import { useDispatch, useSelector } from "react-redux";
-import { fecthUser, initialUserState } from "../redux/user.slice";
+import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import ProgressBar from "../components/ProgressBar";
 import SampleExams from "../components/SampleExams";
 import DashboardStatistics from "../components/DashboardStatistics";
 
 export default function Dashboard(){
-    const dispatch = useDispatch()
     const user = useSelector((state:RootState) => state.user.user)
 
     return(
@@ -49,7 +46,6 @@ export default function Dashboard(){
             </div>
             <SampleExams />
             <DashboardStatistics />
-            <Button onClick={() => dispatch(fecthUser(initialUserState))}>Logout</Button>
         </section>
     )
 }

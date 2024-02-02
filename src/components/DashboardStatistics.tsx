@@ -26,6 +26,7 @@ const Container = styled.div`
     border-radius: 10px;
     padding: 20px;
     margin-top: 40px;
+    margin-bottom: 40px;
 
     .charts{
         display: flex;
@@ -36,6 +37,6 @@ const Container = styled.div`
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding-bottom: 10px;
+        padding-bottom: 25px;
     }
 `
