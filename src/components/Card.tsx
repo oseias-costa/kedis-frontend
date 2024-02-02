@@ -16,7 +16,7 @@ export default function Card({cloud, name, description, path}: CardProps){
             <p className="cloud">{cloud}</p>
             <h3 className="title">{name}</h3>
             <p className="text">{description}</p>
-            <Link to={path}>
+                <Link to={`exame/${path}`} state={{ name, description }}>
                 <Button 
                     sx={[style.button, {width: "100%", fontSize: 14, height: 32}]} 
                     variant="contained"
@@ -34,6 +34,7 @@ const CardContainer = styled.div`
     border: 1px solid #524E4E;
     padding: 12px;
     border-radius: 4px;
+    margin-top: 10px;
 
     .cloud {
         border: 1px solid #524E4E;

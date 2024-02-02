@@ -12,7 +12,7 @@ type LinkMenuProps = {
 
 export default function LinkMenu({path, key, text, itemPath, onClick}:LinkMenuProps){
     return(
-        <Link to={path} key={key} onClick={onClick}>
+        <Link to={itemPath} key={key} onClick={onClick}>
                 <Button 
                     style={style.link} 
                     variant="text"

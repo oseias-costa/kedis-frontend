@@ -4,6 +4,8 @@ import VerifyCode from "../components/VerifyCode";
 import Dashboard from "../pages/Dashboard";
 import { PrivateRoute } from "./PrivateRoutes";
 import Layout from "../components/Layout";
+import Exams from "../pages/Exams";
+import ExamDetail from "../pages/ExamDetail";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -13,6 +15,8 @@ export const router = createBrowserRouter(
             <Route element={<PrivateRoute/>}>
                 <Route path="/" element={<Layout />}>
                     <Route path="/" element={<Dashboard />} />
+                    <Route path="/simulados" element={<Exams />} />
+                    <Route path="/simulados/exame/:exame" element={<ExamDetail />} />
                 </Route>
             </Route>
         </>
