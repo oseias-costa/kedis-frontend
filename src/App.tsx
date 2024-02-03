@@ -11,8 +11,9 @@ import { router } from './routes/RenderRoutes';
 
 export const theme = createTheme({
   palette: {
+    mode: "dark",
     background: {
-      paper: '#fff',
+      paper: '#181B1E',
     },
     text: {
       primary: '#F2F2F0',

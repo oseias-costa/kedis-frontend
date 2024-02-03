@@ -6,6 +6,7 @@ import { PrivateRoute } from "./PrivateRoutes";
 import Layout from "../components/Layout";
 import Exams from "../pages/Exams";
 import ExamDetail from "../pages/ExamDetail";
+import Exam from "../pages/Exam";
 
 export const router = createBrowserRouter(
     createRoutesFromElements(
@@ -17,6 +18,7 @@ export const router = createBrowserRouter(
                     <Route path="/" element={<Dashboard />} />
                     <Route path="/simulados" element={<Exams />} />
                     <Route path="/simulados/exame/:exame" element={<ExamDetail />} />
+                    <Route path="/simulados/exame/:exame/:id" element={<Exam />} />
                 </Route>
             </Route>
         </>

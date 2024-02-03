@@ -11,7 +11,7 @@ export default function Exams(){
                     cloud="Aws" 
                     name="Simulado Cloud Pratictioner #1"
                     description="65 Questões de múltipla escolha com o tempo de 120 minutos de tempo de prova."
-                    path="cloud-practictioner#1"
+                    path="cloud-practictioner-1"
                 />
                 <Card 
                     cloud="Aws" 
