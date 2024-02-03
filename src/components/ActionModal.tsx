@@ -23,10 +23,6 @@ export default function ActionModal({open, setOpen, handleCancel} : {
     handleCancel: () => void
 }) {
 
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
   const handleClose = () => {
     setOpen(false);
   };
