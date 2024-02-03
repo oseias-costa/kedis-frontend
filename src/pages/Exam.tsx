@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, LinearProgress, Radio, RadioGroup, linearProgressClasses } from "@mui/material"
+import { Box, Button, FormControl, FormControlLabel, IconButton, LinearProgress, Radio, RadioGroup, linearProgressClasses } from "@mui/material"
 import styled from "styled-components"
 import { style } from "../components/RecoveyPassword"
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
@@ -6,9 +6,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
 import { ExamState } from "../redux/exam.slice";
-import { bgcolor } from "@mui/system";
+import { Close } from "@mui/icons-material";
+import ActionModal from "../components/ActionModal";
 
-const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
+const BorderLinearProgress = styled(LinearProgress)(() => ({
     height: 10,
     borderRadius: 5,
     padding: 1,
@@ -23,8 +24,8 @@ const BorderLinearProgress = styled(LinearProgress)(({ theme }) => ({
 
 export default function Exam(){
     const [questionNumber, setQuestionNumber] = useState(1)
+    const [cancel, setCancel] = useState(false)
     const [question, setQuestion] = useState(ExamState)
-    const path = location.pathname.split("/")[4]
     const examItem = useSelector((state: RootState) => state.exam.exam)
     console.log(question)
 
@@ -35,6 +36,10 @@ export default function Exam(){
 
     return(
         <Container>
+            <ActionModal open={cancel} setOpen={setCancel} handleCancel={() => console.log("tes")} />
+            <IconButton sx={{position: "absolute", right: 32, top: 32}} onClick={() => setCancel(true)}>
+                <Close sx={{fill: "#fff"}} />
+            </IconButton>
             <Body>
                 <div className="counter">
                     <Box sx={{display: "flex", justifyContent: "space-between", paddingBottom: 1}}>
@@ -98,6 +103,8 @@ const Body = styled.div`
     height: 100%;
 
 .counter {
+        position: relative;
+        bottom: 1px;
         margin: 0 auto;
         background-color: #303235;
         flex-direction: column;
