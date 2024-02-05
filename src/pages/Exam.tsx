@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormControlLabel, Grow, IconButton, LinearProgress, Radio, RadioGroup, linearProgressClasses } from "@mui/material"
+import { Box, Button, FormControl, FormControlLabel, Grow, IconButton, Radio, RadioGroup } from "@mui/material"
 import styled from "styled-components"
 import { style } from "../components/RecoveyPassword"
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
@@ -9,53 +9,47 @@ import { ExamState } from "../redux/exam.slice";
 import { Close } from "@mui/icons-material";
 import ActionModal from "../components/ActionModal";
 import { useNavigate } from "react-router";
+import { BorderLinearProgress } from "../utils/boderLinearProgress";
+import { chosen, chosenReverse, isServiceIncluded } from "../utils/examUtils";
 
-const BorderLinearProgress = styled(LinearProgress)(() => ({
-    height: 10,
-    borderRadius: 5,
-    padding: 1,
-    [`&.${linearProgressClasses.colorPrimary}`]: {
-      backgroundColor: "#26282B",
-    },
-    [`& .${linearProgressClasses.bar}`]: {
-      borderRadius: 5,
-      backgroundColor: '#fff',
-    },
-  }));
+
 
 type QuestionsResolved = {
         id: number, 
         choice: any,
-        correction: boolean    
+        correction: boolean,
+        chosen: string
 }
 
-function chosen(num: number): string {
-    if(num === 1) {
-        return "A"
-    }
-    if(num === 2) {
-        return "B"
-    }
-    if(num === 3) {
-        return "C"
-    }
-    if(num === 4) {
-        return "D"
-    }
-    return ""
+export type WrongAnswers = {
+    serviceType: string,
+    topic: string,
+    wrongAnswers: number,
+    total: number
 }
 
 export default function Exam(){
     const [questionNumber, setQuestionNumber] = useState(1)
     const [cancel, setCancel] = useState(false)
     const [question, setQuestion] = useState(ExamState)
-    const [questionChoice, setQuestionChoice] = useState<QuestionsResolved>()
+    const [questionChoice, setQuestionChoice] = useState<QuestionsResolved>({
+        id: 0, 
+        choice: "",
+        correction: false,
+        chosen: ""    
+    })
     const [grow, setGrow] = useState(false) 
     const examItem = useSelector((state: RootState) => state.exam.exam)
     const navigate = useNavigate()
-    const [questionsResolved, setQuestionsResolved] = useState<QuestionsResolved[]>()
+    const [questionsResolved, setQuestionsResolved] = useState<QuestionsResolved[]>([{
+        id: 0, 
+        choice: "",
+        correction: false,
+        chosen: ""    
+    }])
+    let wrongAnswers: WrongAnswers[] = []
 
-    console.log(questionChoice)
+    
     useEffect(() => {
         setTimeout(() => {
             const find = examItem.filter((item) => item.id === questionNumber)[0]
@@ -64,6 +58,8 @@ export default function Exam(){
         }, 250)
         setGrow(false)
     },[questionNumber])
+
+    const selected = questionsResolved?.filter(item => item.id === question.id)[0]
 
     return(
         <Container>
@@ -91,14 +87,28 @@ export default function Exam(){
                                 <FormControlLabel 
                                     value={item} 
                                     control={<Radio />}
+                                    checked={ selected?.id === question.id 
+                                                ? (index + 1 === chosenReverse(selected?.choice) ? true : false)
+                                                : undefined
+                                    }
                                     onChange={() => 
                                         setQuestionChoice({
-                                        id: question.id, choice: chosen(index + 1), correction: false})}
+                                            id: question.id, 
+                                            choice: chosen(index + 1), 
+                                            correction: chosen(index + 1) === question.correctAlternative,
+                                            chosen: item
+                                        })}
                                     sx={{
-                                        border: "1px solid #40464D", 
+                                        border: (
+                                            selected?.id === question.id 
+                                            ? ((question.correctAlternative === chosen(index +1) 
+                                                    ? "1px solid #056517" 
+                                                    : (index + 1 === chosenReverse(selected?.choice) && chosen(selected?.choice) !== question.correctAlternative) 
+                                                        ? "1px solid #bf1029" : "1px solid #40464D")
+                                            ) : "1px solid #40464D"), 
                                         borderRadius: 2, 
                                         marginBottom: 1,
-                                        padding: 2,
+                                        padding: 1.5,
                                         transition: ".2s linear",
                                         ":hover": {
                                             border: "1px solid #fff",
@@ -112,6 +122,9 @@ export default function Exam(){
                     </FormControl>
                 </div>
                 </Grow>
+                { question.id != 0 && selected?.id === question?.id ? (
+                    <FeedBack><strong>Resposta:</strong> {question.correctAlternativeFeedback}</FeedBack>
+                ): null}
                 <div className="buttonsBlock">
                     <Button 
                         variant="outlined"  
@@ -122,11 +135,38 @@ export default function Exam(){
                     <Button 
                         variant="contained" 
                         onClick={() => {
-                            setGrow(true)
-                            setQuestionNumber(questionNumber + 1)
+                            if(questionsResolved?.find(item => item.id === question.id)){
+                                setQuestionNumber(questionNumber + 1)
+                            }
+                            setQuestionsResolved([...questionsResolved, {id: questionChoice?.id, choice: questionChoice?.choice, correction: questionChoice?.correction, chosen: ""}])
+                            console.log(`
+                                isIncluded ${isServiceIncluded(wrongAnswers, question.serviceType)}
+                                questionChoice.chose ${wrongAnswers.map(item => item)}
+                            `)
+                            if(question.correctAlternative !== questionChoice.chosen[0]){
+                                wrongAnswers.length === 0 
+                                    ? wrongAnswers.push({
+                                        serviceType: question.serviceType,
+                                        topic: question.topic,
+                                        total: 1,
+                                        wrongAnswers: 1 }) 
+                                    : isServiceIncluded(wrongAnswers, question.serviceType) 
+                                        ?  wrongAnswers = wrongAnswers.map((item) => {
+                                            if(item.serviceType === question.serviceType){
+                                                item.total += 1
+                                                item.wrongAnswers += 1
+                                            }
+                                            return item
+                                            }) 
+                                        : wrongAnswers.push({
+                                            serviceType: question.serviceType,
+                                            topic: question.topic,
+                                            total: 1,
+                                            wrongAnswers: 1 }) 
+                            }
                         }} 
-                        sx={[style.button, {width: 120, height: 36}]}
-                    >Próxima</Button>
+                        sx={[style.button, {width: 150, height: 36}]}
+                    >{selected?.id === question?.id ? "Próxima" : "Ver Resposta" }</Button>
                 </div>
             </Body>
         </Container>
@@ -134,11 +174,11 @@ export default function Exam(){
 }
 
 const Container = styled.section`
-    position: fixed;
+    position: absolute;
     background-color: #181B1E;
     z-index: 200;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    min-height: 100vh;
     top: 0;
     left: 0;
 `
@@ -199,6 +239,12 @@ const Body = styled.div`
             }
         }
     }
+`
+
+const FeedBack = styled.p`
+    max-width: 600px;
+    margin: 0 auto;
+    padding-top: 15px;
 `
 
 const ButtonSecondary = {
