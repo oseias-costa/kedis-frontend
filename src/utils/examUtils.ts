@@ -38,3 +38,11 @@ export function isServiceIncluded(arr: WrongAnswers[], service: string): boolean
     }
     return false
 }
+
+export function sumWrongAnswer(wrongAnswers: WrongAnswers[], serviceType: string): void{
+   wrongAnswers.map((item) => {
+        if(item.serviceType === serviceType){
+            item.total += 1
+            item.wrongAnswers += 1
+        }}) 
+}

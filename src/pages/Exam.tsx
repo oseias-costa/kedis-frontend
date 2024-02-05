@@ -12,8 +12,6 @@ import { useNavigate } from "react-router";
 import { BorderLinearProgress } from "../utils/boderLinearProgress";
 import { chosen, chosenReverse, isServiceIncluded } from "../utils/examUtils";
 
-
-
 type QuestionsResolved = {
         id: number, 
         choice: any,
@@ -47,8 +45,8 @@ export default function Exam(){
         correction: false,
         chosen: ""    
     }])
-    let wrongAnswers: WrongAnswers[] = []
 
+    let wrongAnswers: WrongAnswers[] = []
     
     useEffect(() => {
         setTimeout(() => {
@@ -140,30 +138,32 @@ export default function Exam(){
                             }
                             setQuestionsResolved([...questionsResolved, {id: questionChoice?.id, choice: questionChoice?.choice, correction: questionChoice?.correction, chosen: ""}])
                             console.log(`
-                                isIncluded ${isServiceIncluded(wrongAnswers, question.serviceType)}
-                                questionChoice.chose ${wrongAnswers.map(item => item)}
+                                verify ${question.correctAlternative !== questionChoice.chosen[0]}
+                                question.correctAlternative: ${question.correctAlternative}
+                                questionChoice.chosen[0]: ${questionChoice.chosen[0]}
                             `)
+                    
                             if(question.correctAlternative !== questionChoice.chosen[0]){
+                                const wrongAnswer: WrongAnswers = {
+                                    serviceType: question.serviceType,
+                                    topic: question.topic,
+                                    total: 1,
+                                    wrongAnswers: 1
+                                }
+
                                 wrongAnswers.length === 0 
-                                    ? wrongAnswers.push({
-                                        serviceType: question.serviceType,
-                                        topic: question.topic,
-                                        total: 1,
-                                        wrongAnswers: 1 }) 
+                                    ? wrongAnswers.push(wrongAnswer) 
                                     : isServiceIncluded(wrongAnswers, question.serviceType) 
                                         ?  wrongAnswers = wrongAnswers.map((item) => {
-                                            if(item.serviceType === question.serviceType){
-                                                item.total += 1
-                                                item.wrongAnswers += 1
-                                            }
+                                            item.serviceType === question.serviceType 
+                                            ? (item.wrongAnswers = item.wrongAnswers + 1)
+                                            : null
                                             return item
-                                            }) 
-                                        : wrongAnswers.push({
-                                            serviceType: question.serviceType,
-                                            topic: question.topic,
-                                            total: 1,
-                                            wrongAnswers: 1 }) 
-                            }
+                                        })
+                                        : wrongAnswers.push(wrongAnswer) 
+
+                                    }
+                                    console.log(wrongAnswers)
                         }} 
                         sx={[style.button, {width: 150, height: 36}]}
                     >{selected?.id === question?.id ? "Próxima" : "Ver Resposta" }</Button>
