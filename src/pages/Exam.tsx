@@ -2,7 +2,7 @@ import { Box, Button, FormControl, FormControlLabel, Grow, IconButton, Radio, Ra
 import styled from "styled-components"
 import { style } from "../components/RecoveyPassword"
 import AccessAlarmIcon from '@mui/icons-material/AccessAlarm';
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../redux/store";
 import { useEffect, useState } from "react";
 import { ExamState } from "../redux/exam.slice";
@@ -10,7 +10,9 @@ import { Close } from "@mui/icons-material";
 import ActionModal from "../components/ActionModal";
 import { useNavigate } from "react-router";
 import { BorderLinearProgress } from "../utils/boderLinearProgress";
-import { chosen, chosenReverse, isServiceIncluded } from "../utils/examUtils";
+import { chosen, chosenReverse, initialQuestionChoiseState, isServiceIncluded } from "../utils/examUtils";
+import { useTimer } from "../utils/useTimer";
+import { incrementWrongAnswer, newWrongAnswer, resetWrongAnswersState } from "../redux/wrongAnswers.slice";
 
 type QuestionsResolved = {
         id: number, 
@@ -27,15 +29,13 @@ export type WrongAnswers = {
 }
 
 export default function Exam(){
+    const dispatch = useDispatch()
+    const wrongAnswersState = useSelector((state: RootState) => state.wrongAnswers.answers)
+    const { timer } = useTimer()
     const [questionNumber, setQuestionNumber] = useState(1)
     const [cancel, setCancel] = useState(false)
     const [question, setQuestion] = useState(ExamState)
-    const [questionChoice, setQuestionChoice] = useState<QuestionsResolved>({
-        id: 0, 
-        choice: "",
-        correction: false,
-        chosen: ""    
-    })
+    const [questionChoice, setQuestionChoice] = useState<QuestionsResolved>(initialQuestionChoiseState)
     const [grow, setGrow] = useState(false) 
     const examItem = useSelector((state: RootState) => state.exam.exam)
     const navigate = useNavigate()
@@ -45,8 +45,6 @@ export default function Exam(){
         correction: false,
         chosen: ""    
     }])
-
-    let wrongAnswers: WrongAnswers[] = []
     
     useEffect(() => {
         setTimeout(() => {
@@ -61,20 +59,27 @@ export default function Exam(){
 
     return(
         <Container>
-            <ActionModal open={cancel} setOpen={setCancel} handleCancel={() => navigate("/simulados", {replace: true})} />
+            <ActionModal open={cancel} setOpen={setCancel} handleCancel={() => {
+                navigate("/simulados", {replace: true})
+                dispatch(resetWrongAnswersState("reset"))
+                }} />
             <IconButton sx={{position: "absolute", right: 32, top: 32}} onClick={() => setCancel(true)}>
                 <Close sx={{fill: "#fff"}} />
             </IconButton>
             <Body>
                 <div className="counter">
                     <Box sx={{display: "flex", justifyContent: "space-between", paddingBottom: 1}}>
-                        <p style={{fontSize: 20}}>{questionNumber}/65</p>
+                        <p style={{fontSize: 20}}>{questionNumber}/{examItem.length}</p>
                         <div className="clock">
                             <AccessAlarmIcon sx={{width: 20}} />
-                            <p style={{fontSize: 20, paddingLeft: 10}}>00:00</p>
+                            <p style={{
+                                fontSize: 20, 
+                                paddingLeft: 10, 
+                                width: 80
+                            }}>{timer}</p>
                         </div>
                     </Box>
-                    <BorderLinearProgress variant="determinate" value={questionNumber / 65 * 100} />
+                    <BorderLinearProgress variant="determinate" value={questionNumber / examItem.length * 100} />
                 </div>
                 <Grow in={grow}>
                 <div className="questionBlock">
@@ -136,34 +141,44 @@ export default function Exam(){
                             if(questionsResolved?.find(item => item.id === question.id)){
                                 setQuestionNumber(questionNumber + 1)
                             }
-                            setQuestionsResolved([...questionsResolved, {id: questionChoice?.id, choice: questionChoice?.choice, correction: questionChoice?.correction, chosen: ""}])
-                            console.log(`
-                                verify ${question.correctAlternative !== questionChoice.chosen[0]}
-                                question.correctAlternative: ${question.correctAlternative}
-                                questionChoice.chosen[0]: ${questionChoice.chosen[0]}
-                            `)
+                            setQuestionsResolved([...questionsResolved, {
+                                id: questionChoice?.id, 
+                                choice: questionChoice?.choice, 
+                                correction: questionChoice?.correction, 
+                                chosen: ""
+                            }])
+
+                            if(examItem.length === questionNumber){
+                                console.log("ultima")
+                            }
                     
-                            if(question.correctAlternative !== questionChoice.chosen[0]){
+                            if(questionChoice.id !== 0 && question.correctAlternative !== questionChoice.chosen[0]){
                                 const wrongAnswer: WrongAnswers = {
                                     serviceType: question.serviceType,
                                     topic: question.topic,
                                     total: 1,
                                     wrongAnswers: 1
                                 }
-
-                                wrongAnswers.length === 0 
-                                    ? wrongAnswers.push(wrongAnswer) 
-                                    : isServiceIncluded(wrongAnswers, question.serviceType) 
-                                        ?  wrongAnswers = wrongAnswers.map((item) => {
-                                            item.serviceType === question.serviceType 
-                                            ? (item.wrongAnswers = item.wrongAnswers + 1)
-                                            : null
-                                            return item
-                                        })
-                                        : wrongAnswers.push(wrongAnswer) 
-
+                                if(wrongAnswersState.length === 0){
+                                     dispatch(newWrongAnswer(wrongAnswer))
+                                     setQuestionChoice(initialQuestionChoiseState)
+                                     return console.log(wrongAnswersState)
+                                } else {
+                                    for(let i = 0; i < wrongAnswersState.length; i++){
+                                        if(wrongAnswersState[i].serviceType === question.serviceType){
+                                            dispatch(incrementWrongAnswer(question.serviceType))
+                                            setQuestionChoice(initialQuestionChoiseState)
+                                            return console.log(wrongAnswersState)
+                                        }
                                     }
-                                    console.log(wrongAnswers)
+                                    
+                                    dispatch(newWrongAnswer(wrongAnswer))
+                                    setQuestionChoice(initialQuestionChoiseState)
+                                    return console.log(wrongAnswersState)
+                                }
+                            
+                            }
+                                    console.log(wrongAnswersState)
                         }} 
                         sx={[style.button, {width: 150, height: 36}]}
                     >{selected?.id === question?.id ? "Próxima" : "Ver Resposta" }</Button>

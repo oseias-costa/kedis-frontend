@@ -33,8 +33,17 @@ export function chosenReverse(num: string): number{
 }
 
 export function isServiceIncluded(arr: WrongAnswers[], service: string): boolean{
-    if(arr?.find((item) => item.serviceType === service)){
-        return true
+    for(let i = 0; i < arr.length; i++){
+        console.log(`
+            is service is included >>>>
+            ---------------------------
+
+            arr[i].serviceType ${arr[i].serviceType}
+            service: ${service}
+        `)
+        if(arr[i].serviceType === service){
+            return true
+        }
     }
     return false
 }
@@ -45,4 +54,11 @@ export function sumWrongAnswer(wrongAnswers: WrongAnswers[], serviceType: string
             item.total += 1
             item.wrongAnswers += 1
         }}) 
+}
+
+export const initialQuestionChoiseState = {
+        id: 0, 
+        choice: "",
+        correction: false,
+        chosen: ""    
 }
