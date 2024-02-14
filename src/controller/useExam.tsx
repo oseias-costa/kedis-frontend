@@ -29,7 +29,11 @@ export default function useExam(name: string){
         }).then((res) => {
             dispatch(fetchExam(res.data))
             setExamDetail(false)
-            return navigate(`/simulados/exame/${name}/1`)
+            return navigate(`/simulados/exame/${name}/1`, {
+                state: {
+                    mockExam: name, 
+                    cloud: "AWS"
+                }})
         }).catch(() => setExamDetail(false))
     }
 

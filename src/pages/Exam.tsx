@@ -10,9 +10,12 @@ import { Close } from "@mui/icons-material";
 import ActionModal from "../components/ActionModal";
 import { useNavigate } from "react-router";
 import { BorderLinearProgress } from "../utils/boderLinearProgress";
-import { chosen, chosenReverse, initialQuestionChoiseState, isServiceIncluded } from "../utils/examUtils";
+import { chosen, chosenReverse, initialQuestionChoiseState } from "../utils/examUtils";
 import { useTimer } from "../utils/useTimer";
 import { incrementWrongAnswer, newWrongAnswer, resetWrongAnswersState } from "../redux/wrongAnswers.slice";
+import { useLocation } from "react-router-dom"
+import useExamResult from "../controller/useExamResult";
+import LoadExam from "../components/LoadExam"
 
 type QuestionsResolved = {
         id: number, 
@@ -45,7 +48,10 @@ export default function Exam(){
         correction: false,
         chosen: ""    
     }])
-    
+    const { state } = useLocation()
+    const { mockExam, cloud } = state
+    const { handleSaveResult, loading } = useExamResult()
+
     useEffect(() => {
         setTimeout(() => {
             const find = examItem.filter((item) => item.id === questionNumber)[0]
@@ -59,6 +65,7 @@ export default function Exam(){
 
     return(
         <Container>
+            <LoadExam load={loading} />
             <ActionModal open={cancel} setOpen={setCancel} handleCancel={() => {
                 navigate("/simulados", {replace: true})
                 dispatch(resetWrongAnswersState("reset"))
@@ -148,10 +155,7 @@ export default function Exam(){
                                 chosen: ""
                             }])
 
-                            if(examItem.length === questionNumber){
-                                console.log("ultima")
-                            }
-                    
+                            
                             if(questionChoice.id !== 0 && question.correctAlternative !== questionChoice.chosen[0]){
                                 const wrongAnswer: WrongAnswers = {
                                     serviceType: question.serviceType,
@@ -162,7 +166,7 @@ export default function Exam(){
                                 if(wrongAnswersState.length === 0){
                                      dispatch(newWrongAnswer(wrongAnswer))
                                      setQuestionChoice(initialQuestionChoiseState)
-                                     return console.log(wrongAnswersState)
+                                     return console.log(JSON.stringify(wrongAnswersState))
                                 } else {
                                     for(let i = 0; i < wrongAnswersState.length; i++){
                                         if(wrongAnswersState[i].serviceType === question.serviceType){
@@ -176,12 +180,21 @@ export default function Exam(){
                                     setQuestionChoice(initialQuestionChoiseState)
                                     return console.log(wrongAnswersState)
                                 }
-                            
+                                
                             }
-                                    console.log(wrongAnswersState)
+                            console.log(JSON.stringify(wrongAnswersState))
+
+                            if(examItem.length === questionNumber){
+                                console.log("executar save")
+                                handleSaveResult(mockExam, cloud, examItem.length)
+                            }
                         }} 
                         sx={[style.button, {width: 150, height: 36}]}
-                    >{selected?.id === question?.id ? "Próxima" : "Ver Resposta" }</Button>
+
+                    >{  selected?.id === question?.id 
+                        ? "Próxima" 
+                        : examItem.length === questionNumber? "Finalizar" : "Ver Resposta" }
+                    </Button>
                 </div>
             </Body>
         </Container>
