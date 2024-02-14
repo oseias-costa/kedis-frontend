@@ -62,7 +62,9 @@ export default function Exam(){
     },[questionNumber])
 
     const selected = questionsResolved?.filter(item => item.id === question.id)[0]
-
+    let totalWrong: number = 0
+    const test = wrongAnswersState.map((item) => totalWrong += item.total )
+    const points = (((examItem.length - totalWrong) / examItem.length) * 1000).toFixed(2)
     return(
         <Container>
             <LoadExam load={loading} />
@@ -182,11 +184,9 @@ export default function Exam(){
                                 }
                                 
                             }
-                            console.log(JSON.stringify(wrongAnswersState))
 
                             if(examItem.length === questionNumber){
-                                console.log("executar save")
-                                handleSaveResult(mockExam, cloud, examItem.length)
+                                handleSaveResult(mockExam, cloud, examItem.length, Number(points), totalWrong)
                             }
                         }} 
                         sx={[style.button, {width: 150, height: 36}]}

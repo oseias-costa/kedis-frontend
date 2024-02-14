@@ -2289,6 +2289,13 @@ __metadata:
   languageName: node
   linkType: hard
 
+"confetti-js@npm:^0.0.18":
+  version: 0.0.18
+  resolution: "confetti-js@npm:0.0.18"
+  checksum: 137f2fed79ce0143f9422ff5d27df66e90b74657875b7e73e98d769f025e58a111af21ec64d20e6a4224ba5a8fe460693b32ecd07e768caf3174813f4113d67f
+  languageName: node
+  linkType: hard
+
 "convert-source-map@npm:^1.5.0":
   version: 1.9.0
   resolution: "convert-source-map@npm:1.9.0"
@@ -3443,6 +3450,7 @@ __metadata:
     "@vitejs/plugin-react": ^4.2.1
     antd: ^5.13.2
     axios: ^1.6.7
+    confetti-js: ^0.0.18
     eslint: ^8.55.0
     eslint-plugin-react-hooks: ^4.6.0
     eslint-plugin-react-refresh: ^0.4.5

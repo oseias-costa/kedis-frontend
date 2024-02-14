@@ -3,6 +3,7 @@ import { useState } from "react"
 import { useDispatch } from "react-redux"
 import { useNavigate } from "react-router-dom"
 import { fetchExam } from "../redux/exam.slice"
+import { resetWrongAnswersState } from "../redux/wrongAnswers.slice"
 
 export default function useExam(name: string){
     const token = localStorage.getItem("kedisToken")
@@ -11,6 +12,7 @@ export default function useExam(name: string){
     const dispatch = useDispatch()
 
     const handleFechExam = () => {
+        dispatch(resetWrongAnswersState("reset"))
         setTimeout(() => {
             console.log("123")
         }, 4000)

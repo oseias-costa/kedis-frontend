@@ -11,24 +11,15 @@ export default function useExamResult(){
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
     
-    function handleSaveResult(mockExam: string, cloud: string, questions: number){
-        let totalWrong: number = 0
+    function handleSaveResult(mockExam: string, cloud: string, questions: number, result: number, totalWrong: number){
         setLoading(true)
-        for(let i = 0; i < wrongAnswers.length; i++){
-            console.log("for wrong", wrongAnswers[i].total)
-            totalWrong += wrongAnswers[i].total
-        }
 
-        console.log(`
-            questions ${questions}
-        `)
         axios({
             url: "http://localhost:8100/result",
             method: "POST",
             data: { 
                 userId: user.id,
-                result:  (((questions - totalWrong) / questions) * 100).toFixed(2)  
-                ,
+                result:  result,
                 wrong: totalWrong,
                 correct: questions - totalWrong,
                 mockExam: mockExam,
